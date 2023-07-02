@@ -1,0 +1,13 @@
+F:\Studia\Programowanie obiektowe\Projekt-GUI\projekt-gui\projekt-gui\bin\Debug\projekt-gui.exe.config
+F:\Studia\Programowanie obiektowe\Projekt-GUI\projekt-gui\projekt-gui\bin\Debug\projekt-gui.exe
+F:\Studia\Programowanie obiektowe\Projekt-GUI\projekt-gui\projekt-gui\bin\Debug\projekt-gui.pdb
+F:\Studia\Programowanie obiektowe\Projekt-GUI\projekt-gui\projekt-gui\obj\Debug\projekt-gui.csproj.AssemblyReference.cache
+F:\Studia\Programowanie obiektowe\Projekt-GUI\projekt-gui\projekt-gui\obj\Debug\projekt_gui.Form1.resources
+F:\Studia\Programowanie obiektowe\Projekt-GUI\projekt-gui\projekt-gui\obj\Debug\projekt_gui.Properties.Resources.resources
+F:\Studia\Programowanie obiektowe\Projekt-GUI\projekt-gui\projekt-gui\obj\Debug\projekt-gui.csproj.GenerateResource.cache
+F:\Studia\Programowanie obiektowe\Projekt-GUI\projekt-gui\projekt-gui\obj\Debug\projekt-gui.csproj.CoreCompileInputs.cache
+F:\Studia\Programowanie obiektowe\Projekt-GUI\projekt-gui\projekt-gui\obj\Debug\projekt-gui.exe
+F:\Studia\Programowanie obiektowe\Projekt-GUI\projekt-gui\projekt-gui\obj\Debug\projekt-gui.pdb
+F:\Studia\Programowanie obiektowe\Projekt-GUI\projekt-gui\projekt-gui\bin\Debug\System.ValueTuple.dll
+F:\Studia\Programowanie obiektowe\Projekt-GUI\projekt-gui\projekt-gui\bin\Debug\System.ValueTuple.xml
+F:\Studia\Programowanie obiektowe\Projekt-GUI\projekt-gui\projekt-gui\obj\Debug\projekt-gui.csproj.CopyComplete
