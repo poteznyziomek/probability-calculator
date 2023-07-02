@@ -154,7 +154,7 @@ namespace projekt_gui
             Label labelMean = addLabel("mean: ", 500, 100);
             Label labelStd = addLabel("std: ", 500, 200);
             Label prob1 = addLabel("P{", 63, 407, 48, 31);
-            Label prob2 = addLabel("< x <", 163, 410, 80, 31);
+            Label prob2 = addLabel("≤ x ≤", 163, 410, 80, 31);
             Label prob3 = addLabel("} =", 295, 410, 53, 31);
             prob1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             prob2.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -184,6 +184,11 @@ namespace projekt_gui
             textp.Size = new System.Drawing.Size(70, 38);
             textp.ReadOnly = true;
 
+            // Domyślne wartości
+            textX.Text = "1.6";
+            textY.Text = "9";
+            textp.Text = "0.05";
+
             this.Controls.Add(textMean);
             this.Controls.Add(textStd);
             this.Controls.Add(textX);
@@ -198,14 +203,14 @@ namespace projekt_gui
             int numberOfPoints = 200;
             for (int i = 0; i < numberOfPoints; i++)
             {
-                double x = -1 + i * (2.0 / numberOfPoints);
+                double x = -1 + i * (10.5 / numberOfPoints);
                 series.Points.AddXY(x, Math.Exp(- x * x / (2 * 1 * 1)) / (Math.Sqrt(2 * Math.PI)));
             }
 
-            chart.ChartAreas[0].AxisX.Maximum = 1;
-            chart.ChartAreas[0].AxisX.Minimum = -1;
-            chart.ChartAreas[0].AxisY.Maximum = 1;
-            chart.ChartAreas[0].AxisY.Minimum = -.3;
+            //chart.ChartAreas[0].AxisX.Maximum = 1;
+            //chart.ChartAreas[0].AxisX.Minimum = -1;
+            //chart.ChartAreas[0].AxisY.Maximum = 1;
+            chart.ChartAreas[0].AxisY.Minimum = -0.01;
 
             chart.ChartAreas[0].AxisX.MajorGrid.Enabled = false;
             chart.ChartAreas[0].AxisY.MajorGrid.Enabled = false;
@@ -258,15 +263,19 @@ namespace projekt_gui
             //chart.Series.Remove(series);
             //this.Controls.Remove(chart);
             chart.Series["wykres1"].Points.Clear();
+            double a = double.Parse(textX.Text);
+            double b = double.Parse(textY.Text);
             int numberOfPoints = 200;
             for (int i = 0; i < numberOfPoints; i++)
             {
-                double x = -1 + i * (2.0 / numberOfPoints);
+                double x = a - .01 + i * ((b - a + 0.5) / numberOfPoints);
                 series.Points.AddXY(x, Math.Exp(-(x - m) * (x - m) / (2 * std * std)) / (Math.Sqrt(2 * Math.PI * std * std)));
             }
 
             double pole = metodaTrapezow(double.Parse(textX.Text), double.Parse(textY.Text), m, std);
             textp.Text = $"{pole:f2}";
+            chart.ChartAreas[0].AxisX.Maximum = b + .01;
+            chart.ChartAreas[0].AxisX.Minimum = a - .01;
             //this.Controls.Add(chart);
         }
 
