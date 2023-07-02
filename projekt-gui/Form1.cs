@@ -38,9 +38,10 @@ namespace projekt_gui
         private void Form1_Load(object sender, EventArgs e)
         {
             // Ustawienie wyglądu okna
-            this.Height = 750;
-            this.Width = 1100;
+            this.Height = 550;
+            this.Width = 700;
             this.Text = "Kalkulator prawdopodobieństwa";
+            this.BackColor = ColorTranslator.FromHtml("#d7c7d9");
 
             // Wygenerowanie comboboxa i ustawienie jego właściwości
             //typRozkladu = new ComboBox();
@@ -108,17 +109,22 @@ namespace projekt_gui
             lineSeries.BorderWidth = 2;
             lineSeries.ChartArea = "chartPrzestrzen";
             lineSeries.ChartType = SeriesChartType.Line;
-            lineSeries.Color = System.Drawing.Color.DarkViolet;
+            lineSeries.Color = ColorTranslator.FromHtml("#734359");
             lineSeries.IsVisibleInLegend = false;
             chart.Series.Add(lineSeries);
             chart.Size = new Size(300, 300);
             chart.TabIndex = 7;
             chart.Text = "chart";
+            chart.BackColor = ColorTranslator.FromHtml("#d7c7d9");
+
+            chart.ChartAreas[0].BorderDashStyle = ChartDashStyle.Solid;
+            chart.ChartAreas[0].BorderColor = ColorTranslator.FromHtml("#734359");
+            chart.ChartAreas[0].BorderWidth = 3;
 
             // Area series
             areaSeries = new Series("AreaSeries");
             areaSeries.ChartType = SeriesChartType.Area;
-            areaSeries.Color = System.Drawing.Color.Violet;
+            areaSeries.Color = ColorTranslator.FromHtml("#bf8fb7");
             areaSeries.Name = "pole1";
 
 
@@ -215,6 +221,8 @@ namespace projekt_gui
             label.Location = new Point(x, y);
             label.Size = new Size(40, 13);
             label.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            label.BackColor = ColorTranslator.FromHtml("#d7c7d9");
+            label.ForeColor = ColorTranslator.FromHtml("#402e2e");
 
             return label;
         }
@@ -227,6 +235,8 @@ namespace projekt_gui
             textBox.Width = 100;
             textBox.Height = 50;
             textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            textBox.BackColor = ColorTranslator.FromHtml("#d7c7d9");
+            textBox.ForeColor = ColorTranslator.FromHtml("#402e2e");
 
             return textBox;
         }
@@ -237,6 +247,12 @@ namespace projekt_gui
             button.Location = new Point(x, y);
             button.Name = name;
             button.Text = text;
+            button.Size = new Size(40, 13);
+            button.Height = 50;
+            button.Width = 100;
+            button.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            button.BackColor = ColorTranslator.FromHtml("#d7c7d9");
+            button.ForeColor = ColorTranslator.FromHtml("#402e2e");
 
             return button;
         }
