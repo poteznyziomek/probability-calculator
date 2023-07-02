@@ -108,7 +108,7 @@ namespace projekt_gui
             lineSeries.BorderWidth = 2;
             lineSeries.ChartArea = "chartPrzestrzen";
             lineSeries.ChartType = SeriesChartType.Line;
-            lineSeries.Color = System.Drawing.Color.Violet;
+            lineSeries.Color = System.Drawing.Color.DarkViolet;
             lineSeries.IsVisibleInLegend = false;
             chart.Series.Add(lineSeries);
             chart.Size = new Size(300, 300);
@@ -118,6 +118,8 @@ namespace projekt_gui
             // Area series
             areaSeries = new Series("AreaSeries");
             areaSeries.ChartType = SeriesChartType.Area;
+            areaSeries.Color = System.Drawing.Color.Violet;
+            areaSeries.Name = "pole1";
 
 
 
@@ -173,9 +175,7 @@ namespace projekt_gui
 
             // To jest to zamalowane
             chart.Series.Clear();
-            chart.Series.Add(new Series { ChartType = SeriesChartType.Area, Color = Color.FromArgb(100, Color.Red) });
-            chart.Series.Add(new Series { ChartType = SeriesChartType.Area, Color = Color.FromArgb(100, Color.Blue) });
-            chart.ChartAreas[0].AxisX.IsMarginVisible = false;
+            //chart.ChartAreas[0].AxisX.IsMarginVisible = false;
             for (int i = 0; i <= 10; i++)
             {
                 double x = i * (9.0 / 200);
@@ -196,7 +196,7 @@ namespace projekt_gui
             //chart.ChartAreas[0].AxisX.Maximum = 1;
             chart.ChartAreas[0].AxisX.Minimum = -1;
             //chart.ChartAreas[0].AxisY.Maximum = 1;
-            chart.ChartAreas[0].AxisY.Minimum = -0.01;
+            chart.ChartAreas[0].AxisY.Minimum = 0.0;
 
             chart.ChartAreas[0].AxisX.MajorGrid.Enabled = false;
             chart.ChartAreas[0].AxisY.MajorGrid.Enabled = false;
@@ -251,22 +251,36 @@ namespace projekt_gui
             //chart.Series.Remove(series);
             //this.Controls.Remove(chart);
             chart.Series["wykres1"].Points.Clear();
+            chart.Series["pole1"].Points.Clear();
+
             double a = double.Parse(textX.Text);
             double b = double.Parse(textY.Text);
             int numberOfPoints = 200;
+
+            // Wykres (pole)
             for (int i = 0; i < numberOfPoints; i++)
             {
-                double x = a - .01 + i * ((b - a + 0.5) / numberOfPoints);
+                double x = a  + i * ((b - a) / numberOfPoints);
+                areaSeries.Points.AddXY(x, Math.Exp(-(x - m) * (x - m) / (2 * std * std)) / (Math.Sqrt(2 * Math.PI * std * std)));
+            }
+
+
+
+            // Wykres (linia)
+            for (int i = 0; i < numberOfPoints; i++)
+            {
+                double x = a - 1 + i * ((b - a + 2) / numberOfPoints);
                 lineSeries.Points.AddXY(x, Math.Exp(-(x - m) * (x - m) / (2 * std * std)) / (Math.Sqrt(2 * Math.PI * std * std)));
             }
 
             double pole = metodaTrapezow(double.Parse(textX.Text), double.Parse(textY.Text), m, std);
             textp.Text = $"{pole:f2}";
-            chart.ChartAreas[0].AxisX.Maximum = b + .01;
-            chart.ChartAreas[0].AxisX.Minimum = a - .01;
-            
-            
-            
+
+            chart.ChartAreas[0].AxisX.Minimum = a - 1;
+            chart.ChartAreas[0].AxisX.Maximum = b + 1;
+
+
+
         }
 
         private double metodaTrapezow(double a, double b, double m, double std)
