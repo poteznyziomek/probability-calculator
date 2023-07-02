@@ -20,7 +20,8 @@ namespace projekt_gui
         //private Series series;
 
         private ChartArea chartArea;
-        private Series series;
+        private Series lineSeries;
+        private Series areaSeries;
         private Chart chart;
 
         private TextBox textMean;
@@ -95,61 +96,31 @@ namespace projekt_gui
 
             //chart.Series.Add(series);
 
-            // Add the series to the chart area
-            //chart.ChartAreas.Add("nazwa?");
-            //series.ChartArea = chart.ChartAreas.Add("nazwa").Name;
-            //chart.ChartAreas[1].AxisY.LineWidth = 0;
-            //chart.ChartAreas["nazwa"].AxisX.MajorGrid.Enabled = false;
-            //chart.ChartAreas["nazwa"].AxisX.MinorGrid.Enabled = false;
-            //chart.ChartAreas["nazwa"].AxisY.MajorGrid.Enabled = false;
-            //chart.ChartAreas["nazwa"].AxisY.MinorGrid.Enabled = false;
-
-
-            // Add the chart control to the form or container
-            //this.Controls.Add(chart);
-
-            //myChart = new Chart();
-            //myChart.Location = new Point(30, 30);
-            //myChart.Size = new Size(400, 300);
-            //myChart.ChartAreas.Add("chartDistributions");
-
-            //Series mySeries = normal();
-            //myChart.Enabled = false;
-            //myChart.Series.Add(mySeries);
-            //myChart.ChartAreas.Add("nierozumiem");
-
-            //mySeries.ChartArea = myChart.ChartAreas.Add("noicotumabyc").Name;
-
-            //myChart.ChartAreas[1].AxisY.LineWidth = 0;
-
-            //myChart.ChartAreas["noicotumabyc"].AxisX.MajorGrid.Enabled = false;
-            //myChart.ChartAreas["noicotumabyc"].AxisX.MinorGrid.Enabled = false;
-            //myChart.ChartAreas["noicotumabyc"].AxisY.MajorGrid.Enabled = false;
-            //myChart.ChartAreas["noicotumabyc"].AxisY.MinorGrid.Enabled = false;
-
-
-            //this.Controls.Add(myChart);
-
-            //start();
-
             chartArea = new ChartArea();
-            series = new Series();
+            lineSeries = new Series("LineSeries");
             chart = new Chart();
 
             chartArea.Name = "chartPrzestrzen";
             chart.ChartAreas.Add(chartArea);
             chart.Location = new Point(59, 44);
             chart.Name = "wykres";
-            series.Name = "wykres1";
-            series.BorderWidth = 2;
-            series.ChartArea = "chartPrzestrzen";
-            series.ChartType = SeriesChartType.Line;
-            series.Color = System.Drawing.Color.Violet;
-            series.IsVisibleInLegend = false;
-            chart.Series.Add(series);
+            lineSeries.Name = "wykres1";
+            lineSeries.BorderWidth = 2;
+            lineSeries.ChartArea = "chartPrzestrzen";
+            lineSeries.ChartType = SeriesChartType.Line;
+            lineSeries.Color = System.Drawing.Color.Violet;
+            lineSeries.IsVisibleInLegend = false;
+            chart.Series.Add(lineSeries);
             chart.Size = new Size(300, 300);
             chart.TabIndex = 7;
             chart.Text = "chart";
+
+            // Area series
+            areaSeries = new Series("AreaSeries");
+            areaSeries.ChartType = SeriesChartType.Area;
+
+
+
 
             Label labelMean = addLabel("mean: ", 500, 100);
             Label labelStd = addLabel("std: ", 500, 200);
@@ -200,20 +171,37 @@ namespace projekt_gui
 
             this.Controls.Add(buttonOK);
 
+            // To jest to zamalowane
+            chart.Series.Clear();
+            chart.Series.Add(new Series { ChartType = SeriesChartType.Area, Color = Color.FromArgb(100, Color.Red) });
+            chart.Series.Add(new Series { ChartType = SeriesChartType.Area, Color = Color.FromArgb(100, Color.Blue) });
+            chart.ChartAreas[0].AxisX.IsMarginVisible = false;
+            for (int i = 0; i <= 10; i++)
+            {
+                double x = i * (9.0 / 200);
+                areaSeries.Points.AddXY(x, Math.Exp(-x * x / (2 * 1 * 1)) / (Math.Sqrt(2 * Math.PI)));
+            }
+            chart.Series.Add(areaSeries);
+
+
+
             int numberOfPoints = 200;
             for (int i = 0; i < numberOfPoints; i++)
             {
                 double x = -1 + i * (10.5 / numberOfPoints);
-                series.Points.AddXY(x, Math.Exp(- x * x / (2 * 1 * 1)) / (Math.Sqrt(2 * Math.PI)));
+                lineSeries.Points.AddXY(x, Math.Exp(-x * x / (2 * 1 * 1)) / (Math.Sqrt(2 * Math.PI)));
             }
+            chart.Series.Add(lineSeries);
 
             //chart.ChartAreas[0].AxisX.Maximum = 1;
-            //chart.ChartAreas[0].AxisX.Minimum = -1;
+            chart.ChartAreas[0].AxisX.Minimum = -1;
             //chart.ChartAreas[0].AxisY.Maximum = 1;
             chart.ChartAreas[0].AxisY.Minimum = -0.01;
 
             chart.ChartAreas[0].AxisX.MajorGrid.Enabled = false;
             chart.ChartAreas[0].AxisY.MajorGrid.Enabled = false;
+
+            
 
             this.Controls.Add(chart);
         }
@@ -269,14 +257,16 @@ namespace projekt_gui
             for (int i = 0; i < numberOfPoints; i++)
             {
                 double x = a - .01 + i * ((b - a + 0.5) / numberOfPoints);
-                series.Points.AddXY(x, Math.Exp(-(x - m) * (x - m) / (2 * std * std)) / (Math.Sqrt(2 * Math.PI * std * std)));
+                lineSeries.Points.AddXY(x, Math.Exp(-(x - m) * (x - m) / (2 * std * std)) / (Math.Sqrt(2 * Math.PI * std * std)));
             }
 
             double pole = metodaTrapezow(double.Parse(textX.Text), double.Parse(textY.Text), m, std);
             textp.Text = $"{pole:f2}";
             chart.ChartAreas[0].AxisX.Maximum = b + .01;
             chart.ChartAreas[0].AxisX.Minimum = a - .01;
-            //this.Controls.Add(chart);
+            
+            
+            
         }
 
         private double metodaTrapezow(double a, double b, double m, double std)
@@ -294,127 +284,6 @@ namespace projekt_gui
             return sum;
         }
 
-        Series normal(double mean = 0, double std = 1)
-        {
-            Series series = new Series();
-            series.ChartType = SeriesChartType.Line;
-
-            // Add data points to the series
-            int numberOfPoints = 200;
-            for (int i = 0; i < numberOfPoints; i++)
-            {
-                double x = -1 + i * (2.0 / numberOfPoints);
-                series.Points.AddXY(x, Math.Exp(-(x - mean) * (x - mean) / (2 * std * std)) / (Math.Sqrt(2 * Math.PI * std * std)));
-            }
-
-            return series;
-        }
-
-        // Metoda, która wczytuje cały interfejs oprócz charta
-        private void loadWindow(string distributionType)
-        {
-
-        }
-
-        private void ComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string selectedOption = typRozkladu.SelectedItem.ToString();
-
-            //Console.WriteLine("Selected option: " + selectedOption);
-            //MessageBox.Show(selectedOption);
-
-            switch (selectedOption)
-            {
-                case "Normalny":
-                    rozkladNormalny();
-                    break;
-                case "Chi-kwadrat":
-                    rozkladChiKwadrat();
-                    break;
-                default:
-                    rozkladNormalny();
-                    break;
-            }
-                    
-        }
-
-        // Rozkład normalny
-        private void rozkladNormalny(double mean = 0, double standardDeviation = 1)
-        {
-            //chart.Series.Remove(series);
-            //this.Controls.Remove(chart);
-            chart.Series["series"].Points.Clear();
-
-            double m = mean;
-            double std = standardDeviation;
-
-            //series = new Series();
-            //series.ChartType = SeriesChartType.Line;
-
-            // Add data points to the series
-            int numberOfPoints = 200;
-            for (int i = 0; i < numberOfPoints; i++)
-            {
-                double x = -1 + i * (2.0 / numberOfPoints);
-                series.Points.AddXY(x, Math.Exp(-(x - m) * (x - m) / (2 * std * std)) / (Math.Sqrt(2 * Math.PI * std * std)));
-            }
-
-            chart.Series.Add(series);
-            //myChart.ChartAreas.Add("chartNormal");
-
-            //series.ChartArea = chart.ChartAreas.Add("noicotumabyc").Name;
-
-            chart.ChartAreas[1].AxisY.LineWidth = 0;
-
-            chart.ChartAreas["nazwa"].AxisX.MajorGrid.Enabled = false;
-            chart.ChartAreas["nazwa"].AxisX.MinorGrid.Enabled = false;
-            chart.ChartAreas["nazwa"].AxisY.MajorGrid.Enabled = false;
-            chart.ChartAreas["nazwa"].AxisY.MinorGrid.Enabled = false;
-
-
-            this.Controls.Add(chart);
-            
-        }
-
-        // Rozkład chi-kwadrat
-        private void rozkladChiKwadrat(double degreesOfFreedom=5)
-        {
-            chart.Series.Remove(series);
-            this.Controls.Remove(chart);
-
-            double df = degreesOfFreedom;
-            series = new Series();
-            series.ChartType = SeriesChartType.Line;
-
-            // Dodaj punkty do series
-            int numberOfPoints = 200;
-            for (int i = 0; i < numberOfPoints; i++)
-            {
-                double x = -1 + i * (2.0 / numberOfPoints);
-                if (x < 0)
-                {
-                    series.Points.AddXY(x, 0);
-                }
-                else
-                {
-                    series.Points.AddXY(x, (Math.Pow(x,df / 2 - 1) * Math.Exp(- x / 2)) / (Math.Pow(2, df / 2) * 1));
-                }
-            }
-
-            chart.Series.Add(series);
-            //myChart.ChartAreas.Add("chartChiSquared");
-
-            //series.ChartArea = chart.ChartAreas.Add("innanazwa").Name;
-
-            chart.ChartAreas[1].AxisY.LineWidth = 0;
-
-            chart.ChartAreas["nazwa"].AxisX.MajorGrid.Enabled = false;
-            chart.ChartAreas["nazwa"].AxisX.MinorGrid.Enabled = false;
-            chart.ChartAreas["nazwa"].AxisY.MajorGrid.Enabled = false;
-            chart.ChartAreas["nazwa"].AxisY.MinorGrid.Enabled = false;
-
-
-            this.Controls.Add(chart);
-        }
+        
     }
 }
